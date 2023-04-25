@@ -18,7 +18,7 @@ import random
 
 url = 'https://www.zara.com/sk/sk/vysivane-midi-saty-p02895994.html?v1=255780543&v2=2184117'
 itemColor = 'Šedobiela'
-itemSize = 'm'.upper()
+itemSize = 'L'.upper()
 sms = 'da'.upper()
 buy = 'ne'
 
