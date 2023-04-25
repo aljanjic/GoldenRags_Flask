@@ -16,14 +16,25 @@ from lxml import html
 from urllib.parse import urlparse, parse_qs
 import random
 
-url = 'https://www.zara.com/sk/sk/vysivane-midi-saty-p02895994.html?v1=255780543&v2=2184117'
-itemColor = 'Šedobiela'
-itemSize = 'L'.upper()
-sms = 'da'.upper()
-buy = 'ne'
+from flask import Flask, render_template
 
-found = False
-atempt = 1
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+  return render_template('index.html')
+
+app.run(host='0.0.0.0')
+
+
+# url = 'https://www.zara.com/sk/sk/vysivane-midi-saty-p02895994.html?v1=255780543&v2=2184117'
+# itemColor = 'Šedobiela'
+# itemSize = 'L'.upper()
+# sms = 'da'.upper()
+# buy = 'ne'
+
+# found = False
+# atempt = 1
 
 
 def get_drvier():
