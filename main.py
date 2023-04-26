@@ -16,25 +16,43 @@ from lxml import html
 from urllib.parse import urlparse, parse_qs
 import random
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def home():
+  print('Get request string')
   return render_template('index.html')
+
+
+@app.route('/', methods=['POST'])
+def home_post():
+  url = request.form['url']
+  itemSize = request.form['itemSize']
+  itemColor = request.form['itemColor']
+  sms = request.form['sms']
+  return render_template('index.html',
+                         output='Start button works',
+                         Url=url,
+                         ItemSize=itemSize,
+                         ItemColor=itemColor,
+                         Sms=sms)
+
 
 app.run(host='0.0.0.0')
 
+url = 'https://www.zara.com/sk/sk/priliehave-vyblednute-tricko-p04424014.html?v1=241353529&v2=2184408'
+itemColor = 'Norková'
+itemSize = 'S'
+sms = 'ne'
+buy = 'ne'
 
-# url = 'https://www.zara.com/sk/sk/vysivane-midi-saty-p02895994.html?v1=255780543&v2=2184117'
-# itemColor = 'Šedobiela'
-# itemSize = 'L'.upper()
-# sms = 'da'.upper()
-# buy = 'ne'
+found = False
+atempt = 1
 
-# found = False
-# atempt = 1
+print(url)
 
 
 def get_drvier():
@@ -216,5 +234,5 @@ query_params = parse_qs(query_string)
 v1_param = query_params.get('v1', [None])[0]
 
 while found == False:
-  get_krpu(url, itemColor, itemSize, buy, sms)
+  get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
   atempt += 1

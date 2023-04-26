@@ -2,26 +2,31 @@
   <h1> Golden Rags </h1>
   <p> Enter item values below </p>
 
-  <form>
-    <div>
-      <input></input>
+  <form form method='POST'>
+    <div class='m-2'>
+      <label>Product url: </label>
+      <input value='{{Url}}' name='url'></input>
     </div>
 
-    <div>
-      <input></input>
+    <div class='m-2'>
+      <label>Item size: </label>
+      <input value='{{ItemSize}}' name='itemSize'></input>
     </div>
 
-    <div>
-      <input></input>
+    <div class='m-2'>
+      <label>Item color: </label>
+      <input value='{{ItemColor}}' name='itemColor' ></input>
     </div>
 
-    <div>
-      <input></input>
+    <div class='m-2'>
+      <label>Send sms: </label>
+      <input value='{{Sms}}' name='sms' ></input>
     </div>
-
-    <p></p>
-
+    
     <button>Start</button>
+
+    <p>{{output}}</p>
+    
   </form>
 
 </div>
