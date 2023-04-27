@@ -138,49 +138,49 @@ def send_email(url, itemColor, itemSize, sms):
     #send_sms(itemColor, itemSize, product_name, url)
 
 
-def buy_product(driver, soup, itemSize, itemColor):
-  # Close first cookies
+# def buy_product(driver, soup, itemSize, itemColor):
+#   # Close first cookies
 
-  driver.find_element(by='id', value='onetrust-close-btn-container').click()
+#   driver.find_element(by='id', value='onetrust-close-btn-container').click()
 
-  # Continue in Slovakia
-  driver.find_element(
-    by='xpath',
-    value=
-    '/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div/div[2]/section[1]/button[1]'
-  ).click()
+#   # Continue in Slovakia
+#   driver.find_element(
+#     by='xpath',
+#     value=
+#     '/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div/div[2]/section[1]/button[1]'
+#   ).click()
 
-  page_content = driver.page_source
+#   page_content = driver.page_source
 
-  # Parse the page content as an HTML tree
-  tree = html.fromstring(page_content)
+#   # Parse the page content as an HTML tree
+#   tree = html.fromstring(page_content)
 
-  # List of colors and select color
-  colors_available = tree.xpath(
-    '//div[@class="product-detail-color-selector__color-area"]//span[@class="screen-reader-text"]'
-  )
-  for index, element in enumerate(colors_available):
-    value = f'//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[4]/div/ul/li[{index + 1}]/button/div[1]'
-    if itemColor == element.text:
-      driver.find_element(by='xpath', value=value).click()
+#   # List of colors and select color
+#   colors_available = tree.xpath(
+#     '//div[@class="product-detail-color-selector__color-area"]//span[@class="screen-reader-text"]'
+#   )
+#   for index, element in enumerate(colors_available):
+#     value = f'//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[4]/div/ul/li[{index + 1}]/button/div[1]'
+#     if itemColor == element.text:
+#       driver.find_element(by='xpath', value=value).click()
 
-  time.sleep(2)
-  # List of sizes and select size
-  sizes = tree.xpath('//span[@class="product-size-info__main-label"]')
+#   time.sleep(2)
+#   # List of sizes and select size
+#   sizes = tree.xpath('//span[@class="product-size-info__main-label"]')
 
-  for index, size in enumerate(sizes):
-    value = f'//*[@id="product-size-selector-{v1_param}-item-{index}"]/div/div/span'
-    if itemSize == size.text:
-      driver.find_element(by='xpath', value=value).click()
+#   for index, size in enumerate(sizes):
+#     value = f'//*[@id="product-size-selector-{v1_param}-item-{index}"]/div/div/span'
+#     if itemSize == size.text:
+#       driver.find_element(by='xpath', value=value).click()
 
-  time.sleep(3)
-  # Add to cart
-  driver.find_element(
-    by='xpath',
-    value='//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[6]/button'
-  ).click()
+#   time.sleep(3)
+#   # Add to cart
+#   driver.find_element(
+#     by='xpath',
+#     value='//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[6]/button'
+#   ).click()
 
-  time.sleep(3)
+#   time.sleep(3)
 
 
 def get_krpu(url, itemColor='', itemSize='', buy='', sms=''):
