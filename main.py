@@ -20,7 +20,7 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-atempt=1
+atempt = 1
 found = False
 
 
@@ -39,19 +39,16 @@ def home_post():
   sms = request.form['sms']
 
   while found == False:
-      get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
-      global atempt
-      atempt += 1
+    get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
+    global atempt
+    atempt += 1
 
-  
   return render_template('index.html',
                          output='Start button works',
                          Url=url,
                          ItemSize=itemSize,
                          ItemColor=itemColor,
                          Sms=sms)
-
-
 
 
 # url = 'https://www.zara.com/sk/sk/priliehave-vyblednute-tricko-p04424014.html?v1=241353529&v2=2184408'
@@ -244,8 +241,4 @@ headers = {
 # query_params = parse_qs(query_string)
 # v1_param = query_params.get('v1', [None])[0]
 
-
-
-
 app.run(host='0.0.0.0')
-
