@@ -20,19 +20,30 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
+atempt=1
+found = False
+
 
 @app.route('/')
 def home():
-  print('Get request string')
+  print('GET request string')
   return render_template('index.html')
 
 
 @app.route('/', methods=['POST'])
 def home_post():
+
   url = request.form['url']
   itemSize = request.form['itemSize']
   itemColor = request.form['itemColor']
   sms = request.form['sms']
+
+  while found == False:
+      get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
+      global atempt
+      atempt += 1
+
+  
   return render_template('index.html',
                          output='Start button works',
                          Url=url,
@@ -41,21 +52,21 @@ def home_post():
                          Sms=sms)
 
 
-app.run(host='0.0.0.0')
-
-url = 'https://www.zara.com/sk/sk/priliehave-vyblednute-tricko-p04424014.html?v1=241353529&v2=2184408'
-itemColor = 'Norková'
-itemSize = 'S'
-sms = 'ne'
-buy = 'ne'
-
-found = False
-atempt = 1
-
-print(url)
 
 
-def get_drvier():
+# url = 'https://www.zara.com/sk/sk/priliehave-vyblednute-tricko-p04424014.html?v1=241353529&v2=2184408'
+# itemColor = 'Norková'
+# itemSize = 'S'
+# sms = 'ne'
+# buy = 'ne'
+
+# found = False
+# atempt = 1
+
+# print(url)
+
+
+def get_drvier(url):
   # Set options to make browsing easier
   options = webdriver.ChromeOptions()
   options.add_argument("disable-infobars")
@@ -177,7 +188,7 @@ def get_krpu(url, itemColor='', itemSize='', buy='', sms=''):
   # if itemSize != 'X':
   #     buy = input('Zelis li da proizvod bude kupljen "da/ne"?: ').lower()
 
-  driver = get_drvier()
+  driver = get_drvier(url)
 
   content = driver.page_source
 
@@ -225,14 +236,16 @@ headers = {
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36"
 }
 
-# Parse the URL and extract the query string
-parsed_url = urlparse(url)
-query_string = parsed_url.query
+# # Parse the URL and extract the query string
+# parsed_url = urlparse(url)
+# query_string = parsed_url.query
 
-# Parse the query string and extract the v1 parameter value
-query_params = parse_qs(query_string)
-v1_param = query_params.get('v1', [None])[0]
+# # Parse the query string and extract the v1 parameter value
+# query_params = parse_qs(query_string)
+# v1_param = query_params.get('v1', [None])[0]
 
-while found == False:
-  get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
-  atempt += 1
+
+
+
+app.run(host='0.0.0.0')
+
