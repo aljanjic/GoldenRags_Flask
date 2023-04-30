@@ -38,6 +38,7 @@ def home_post():
   itemColor = request.form['itemColor']
   sms = request.form['sms']
 
+
   while found == False:
     get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
     global atempt
@@ -50,17 +51,6 @@ def home_post():
                          ItemColor=itemColor,
                          Sms=sms)
 
-
-# url = 'https://www.zara.com/sk/sk/priliehave-vyblednute-tricko-p04424014.html?v1=241353529&v2=2184408'
-# itemColor = 'Norková'
-# itemSize = 'S'
-# sms = 'ne'
-# buy = 'ne'
-
-# found = False
-# atempt = 1
-
-# print(url)
 
 
 def get_drvier(url):
