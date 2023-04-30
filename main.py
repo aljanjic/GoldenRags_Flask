@@ -22,6 +22,7 @@ app = Flask(__name__)
 
 atempt = 1
 found = False
+info = ''
 
 
 @app.route('/')
@@ -38,19 +39,18 @@ def home_post():
   itemColor = request.form['itemColor']
   sms = request.form['sms']
 
-
   while found == False:
     get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
     global atempt
     atempt += 1
 
+  global info
   return render_template('index.html',
-                         output='Start button works',
+                         output=info,
                          Url=url,
                          ItemSize=itemSize,
                          ItemColor=itemColor,
                          Sms=sms)
-
 
 
 def get_drvier(url):
@@ -117,6 +117,8 @@ def send_email(url, itemColor, itemSize, sms):
   message_text = message.as_string()
   server.sendmail(sender, receiver, message_text)
   server.quit()
+  global info
+  info = 'User was notified about product availability'
   print('Mail sent')
   global found
   found = True
