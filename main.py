@@ -35,7 +35,7 @@ def home():
 def home_post():
 
   url = request.form['url']
-  itemSize = request.form['itemSize']
+  itemSize = request.form['itemSize'].upper()
   itemColor = request.form['itemColor']
   sms = request.form['sms']
 
