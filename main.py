@@ -177,6 +177,7 @@ def get_krpu(url, itemColor='', itemSize='', buy='', sms=''):
   # if itemSize != 'X':
   #     buy = input('Zelis li da proizvod bude kupljen "da/ne"?: ').lower()
 
+  print('Looking for Krpa')
   driver = get_drvier(url)
 
   content = driver.page_source
