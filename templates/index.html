@@ -48,15 +48,31 @@
     <div class="alert alert-info">
        {{output}}
     </div>
-    <button class='btn btn-primary'>Start</button>
+
+    <div class="alert alert-warning" id="running"></div>
+    
+    <button class='btn btn-primary' id="myButton" onclick="addText()">Start</button>
+
+
+    
+
 
     
     
   </form>
-    <p>If the Blue bar above says that user was notified, go to link below, Stop         and Run replit and refresh this page</p>
+    <p>If the Blue bar above says that user was notified, go to link below, Stop         and Run replit and open the page in the new tab</p>
     <a href='https://replit.com/@aljanjic/GoldenRagsFlask#main.py'> Replit link</a>
     </div>
 
 
 
-how to add paragraf when button is clicked with JavaScript
+
+
+<script>
+  function addText() {
+    let paragraph = document.getElementById("running");
+    paragraph.innerHTML = "Script is running, do not close or refresh the page!";
+  }
+</script>
+
+
