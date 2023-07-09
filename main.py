@@ -35,8 +35,8 @@ def home():
 def home_post():
 
   url = request.form['url']
-  itemSize = request.form['itemSize'].upper()
   itemColor = request.form['itemColor']
+  itemSize = request.form['itemSize'].upper()
   sms = request.form['sms']
 
   while found == False:
@@ -65,111 +65,6 @@ def get_drvier(url):
   driver = webdriver.Chrome(options=options)
   driver.get(f"{url}")
   return driver
-
-
-def send_sms(itemColor, itemSize, product_name, url):
-  account_sid = os.environ['TWILIO_ACCOUNT_SID']
-  auth_token = os.environ['TWILIO_AUTH_TOKEN']
-  client = Client(account_sid, auth_token)
-
-  message = client.messages \
-                  .create(
-                       body=f"""
-                       {itemColor} {product_name} Size: {itemSize} is now avaiable. Buy it now on: {url}
-                       """,
-                       from_= os.getenv('TWILIO_NUMBER'),
-                       to= os.getenv('RECIVER_NUMBER')
-                   )
-
-  print(message.sid)
-
-
-def send_email(url, itemColor, itemSize, sms):
-
-  sender = os.getenv('GOLDEN_MAIL')
-  # Add variable for  reciver email address
-  receiver = os.getenv('RECEIVER_MAIL')
-  password = os.getenv('GOLDEN_PASSWORD')
-
-  product_name = ''
-  match = re.search(r"/([^/]+)-p\d+\.html", url)
-  if match:
-    product_name = match.group(1).replace("-", " ").upper()
-
-  message = MIMEMultipart()
-  message['From'] = sender
-  message['To'] = receiver
-  message[
-    'Subject'] = f'{itemColor} {product_name} is available. Size: {itemSize}'
-
-  body = f"""
-    <h2>{itemColor} {product_name} is available. Size: {itemSize}</h2>
-    
-    {product_name} je na stanju
-    <a href={url}'> Kupi odmah! </a>
-    """
-  mimetext = MIMEText(body, 'html')
-  message.attach(mimetext)
-
-  server = smtplib.SMTP('smtp.office365.com', 587)
-  server.starttls()
-  server.login(sender, password)
-  message_text = message.as_string()
-  server.sendmail(sender, receiver, message_text)
-  server.quit()
-  global info
-  info = 'User was notified about product availability'
-  print('Mail sent')
-  global found
-  found = True
-  if sms == 'DA':
-    print('Bupi-bupi saljem SMS ali moras ukloniti komentar iz koda')
-    #send_sms(itemColor, itemSize, product_name, url)
-
-
-# def buy_product(driver, soup, itemSize, itemColor):
-#   # Close first cookies
-
-#   driver.find_element(by='id', value='onetrust-close-btn-container').click()
-
-#   # Continue in Slovakia
-#   driver.find_element(
-#     by='xpath',
-#     value=
-#     '/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div/div[2]/section[1]/button[1]'
-#   ).click()
-
-#   page_content = driver.page_source
-
-#   # Parse the page content as an HTML tree
-#   tree = html.fromstring(page_content)
-
-#   # List of colors and select color
-#   colors_available = tree.xpath(
-#     '//div[@class="product-detail-color-selector__color-area"]//span[@class="screen-reader-text"]'
-#   )
-#   for index, element in enumerate(colors_available):
-#     value = f'//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[4]/div/ul/li[{index + 1}]/button/div[1]'
-#     if itemColor == element.text:
-#       driver.find_element(by='xpath', value=value).click()
-
-#   time.sleep(2)
-#   # List of sizes and select size
-#   sizes = tree.xpath('//span[@class="product-size-info__main-label"]')
-
-#   for index, size in enumerate(sizes):
-#     value = f'//*[@id="product-size-selector-{v1_param}-item-{index}"]/div/div/span'
-#     if itemSize == size.text:
-#       driver.find_element(by='xpath', value=value).click()
-
-#   time.sleep(3)
-#   # Add to cart
-#   driver.find_element(
-#     by='xpath',
-#     value='//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[6]/button'
-#   ).click()
-
-#   time.sleep(3)
 
 
 def get_krpu(url, itemColor='', itemSize='', buy='', sms=''):
@@ -215,10 +110,70 @@ def get_krpu(url, itemColor='', itemSize='', buy='', sms=''):
       else:
         send_email(url, itemColor, itemSize, sms)
         time.sleep(2)
-        if buy == 'da':
-          buy_product(driver, soup, itemSize, itemColor)
+        # if buy == 'da':
+        #   buy_product(driver, soup, itemSize, itemColor)
   if itemSize == 'X':
     print(result)
+
+
+def send_email(url, itemColor, itemSize, sms):
+
+  sender = os.getenv('GOLDEN_MAIL')
+  # Add variable for  reciver email address
+  receiver = os.getenv('RECEIVER_MAIL')
+  password = os.getenv('GOLDEN_PASSWORD')
+
+  product_name = ''
+  match = re.search(r"/([^/]+)-p\d+\.html", url)
+  if match:
+    product_name = match.group(1).replace("-", " ").upper()
+
+  message = MIMEMultipart()
+  message['From'] = sender
+  message['To'] = receiver
+  message[
+    'Subject'] = f'{itemColor} {product_name} is available. Size: {itemSize}'
+
+  body = f"""
+    <h2>{itemColor} {product_name} is available. Size: {itemSize}</h2>
+    
+    {product_name} je na stanju
+    <a href={url}'> Kupi odmah! </a>
+    """
+  mimetext = MIMEText(body, 'html')
+  message.attach(mimetext)
+
+  server = smtplib.SMTP('smtp.office365.com', 587)
+  server.starttls()
+  server.login(sender, password)
+  message_text = message.as_string()
+  server.sendmail(sender, receiver, message_text)
+  server.quit()
+  global info
+  info = 'User was notified about product availability'
+  print('Mail sent')
+  global found
+  found = True
+  if sms == 'DA':
+    print('Bupi-bupi saljem SMS ali moras ukloniti komentar iz koda')
+    #send_sms(itemColor, itemSize, product_name, url)
+
+
+def send_sms(itemColor, itemSize, product_name, url):
+  account_sid = os.environ['TWILIO_ACCOUNT_SID']
+  auth_token = os.environ['TWILIO_AUTH_TOKEN']
+  client = Client(account_sid, auth_token)
+
+  message = client.messages \
+                  .create(
+                       body=f"""
+                       {itemColor} {product_name} Size: {itemSize} is now avaiable. Buy it now on: {url}
+                       """,
+                       from_= os.getenv('TWILIO_NUMBER'),
+                       to= os.getenv('RECIVER_NUMBER')
+                   )
+
+  print(message.sid)
 
 
 headers = {
@@ -226,12 +181,48 @@ headers = {
   "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36"
 }
 
-# # Parse the URL and extract the query string
-# parsed_url = urlparse(url)
-# query_string = parsed_url.query
+# def buy_product(driver, soup, itemSize, itemColor):
+#   # Close first cookies
 
-# # Parse the query string and extract the v1 parameter value
-# query_params = parse_qs(query_string)
-# v1_param = query_params.get('v1', [None])[0]
+#   driver.find_element(by='id', value='onetrust-close-btn-container').click()
+
+#   # Continue in Slovakia
+#   driver.find_element(
+#     by='xpath',
+#     value=
+#     '/html/body/div[1]/div[1]/div[2]/div[2]/div/div/div/div[2]/section[1]/button[1]'
+#   ).click()
+
+#   page_content = driver.page_source
+
+#   # Parse the page content as an HTML tree
+#   tree = html.fromstring(page_content)
+
+#   # List of colors and select color
+#   colors_available = tree.xpath(
+#     '//div[@class="product-detail-color-selector__color-area"]//span[@class="screen-reader-text"]'
+#   )
+#   for index, element in enumerate(colors_available):
+#     value = f'//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[4]/div/ul/li[{index + 1}]/button/div[1]'
+#     if itemColor == element.text:
+#       driver.find_element(by='xpath', value=value).click()
+
+#   time.sleep(2)
+#   # List of sizes and select size
+#   sizes = tree.xpath('//span[@class="product-size-info__main-label"]')
+
+#   for index, size in enumerate(sizes):
+#     value = f'//*[@id="product-size-selector-{v1_param}-item-{index}"]/div/div/span'
+#     if itemSize == size.text:
+#       driver.find_element(by='xpath', value=value).click()
+
+#   time.sleep(3)
+#   # Add to cart
+#   driver.find_element(
+#     by='xpath',
+#     value='//*[@id="main"]/article/div[2]/div[1]/div[2]/div[1]/div[6]/button'
+#   ).click()
+
+#   time.sleep(3)
 
 app.run(host='0.0.0.0')
