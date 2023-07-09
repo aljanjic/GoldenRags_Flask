@@ -40,7 +40,7 @@ def home_post():
   sms = request.form['sms'].upper()
 
   while found == False:
-    get_krpu(url, itemColor, itemSize, buy='no', sms='no')
+    get_krpu(url, itemColor, itemSize, buy='no', sms='YES')
     global atempt
     atempt += 1
 
