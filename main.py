@@ -37,10 +37,10 @@ def home_post():
   url = request.form['url']
   itemColor = request.form['itemColor']
   itemSize = request.form['itemSize'].upper()
-  sms = request.form['sms']
+  sms = request.form['sms'].upper()
 
   while found == False:
-    get_krpu(url, itemColor, itemSize, buy='ne', sms='ne')
+    get_krpu(url, itemColor, itemSize, buy='no', sms='no')
     global atempt
     atempt += 1
 
@@ -110,7 +110,7 @@ def get_krpu(url, itemColor='', itemSize='', buy='', sms=''):
       else:
         send_email(url, itemColor, itemSize, sms)
         time.sleep(2)
-        # if buy == 'da':
+        # if buy == 'YES':
         #   buy_product(driver, soup, itemSize, itemColor)
   if itemSize == 'X':
     print(result)
@@ -154,8 +154,8 @@ def send_email(url, itemColor, itemSize, sms):
   print('Mail sent')
   global found
   found = True
-  if sms == 'DA':
-    print('Bupi-bupi saljem SMS ali moras ukloniti komentar iz koda')
+  if sms == 'YES':
+    print('Bupi-bupi I send SMS but you need to remove comment from the code')
     #send_sms(itemColor, itemSize, product_name, url)
 
 
